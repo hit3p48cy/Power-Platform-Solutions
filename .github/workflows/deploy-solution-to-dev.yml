@@ -1,0 +1,72 @@
+name: deploy-solution-to-dev
+# Reusable workflow
+# convert solution to managed (using a build PowerPlatform environment for the conversion)
+# upload the solution to the GitHub artifacts and deploy to the PROD environment
+on:
+  workflow_dispatch:
+    inputs: 
+      #workflow_call
+      #Do Not change these values
+      #Values are set by the caller
+      #caller sample: release-action-call.ymnl
+      solution_name:
+        description: 'The solution name.'
+        type: string
+        default: OrgSolution
+      root_folder:
+        description: 'name of the folder where the solution is going unpacked'
+        type: string
+        default: Power-Platform-Solutions
+      zip_folder:
+        description: 'name of the folder where the zip files reside'
+        type: string
+        default: Power-Platform-Solutions
+      DEV_ENVIRONMENT_URL: 
+        description: 'DEV environment url.'
+        type: string
+        required: true
+        default: https://orga37e0bb9.crm.dynamics.com/
+      
+  
+permissions:
+  contents: write
+
+jobs:
+  deploy-to-dev:
+    #needs: [ convert-to-managed ]
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_DEBUG: 1
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        lfs: true
+    - name: who-am-i action
+      uses: microsoft/powerplatform-actions/who-am-i@v0
+      with:
+        environment-url: ${{ inputs.DEV_ENVIRONMENT_URL }}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+
+    - name: Deleting solution
+      uses: microsoft/powerplatform-actions/delete-solution@v0
+      with:
+        environment-url: ${{ inputs.DEV_ENVIRONMENT_URL }}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-name: ${{ inputs.solution_name }}
+   
+    - name: Import solution to dev env
+      uses: microsoft/powerplatform-actions/import-solution@v0
+      with:
+        environment-url: ${{ inputs.DEV_ENVIRONMENT_URL }}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-file: ${{ inputs.zip_folder}}/${{ inputs.solution_name }}_unmanaged.zip
+        force-overwrite: true
+        publish-changes: true
+        activate-plugins: true
