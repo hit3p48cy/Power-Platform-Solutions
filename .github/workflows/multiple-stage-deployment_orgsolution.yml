@@ -1,0 +1,94 @@
+name: multiple-stage-deployment_orgsolution
+# Export solution from DEV environment
+#  unpack it and prepare, commit and push a git branch with the changes
+
+on:
+  workflow_dispatch:
+    inputs:
+      # Change this value
+      solution_name:
+        description: 'name of the solution to worked on from Power Platform'
+        required: true
+        default: DemoSolution
+       
+      solution_name1:
+        description: 'name of the solution to worked on from Power Platform'
+        required: true
+        default: OrgSolution
+    
+      
+env:
+#edit your values here
+  ENVIRONMENT_URL: ${{ github.actor == 'hitesh3p48cy-github-' && 'https://orga37e0bb9-.crm.dynamics.com/' || github.actor == 'hitesh3p48cy-github' && 'https://orga37e0bb9.crm.dynamics.com/' || 'https://orga37e0bb9--.crm.dynamics.com/' }}
+
+permissions:
+  contents: write
+jobs:
+  export-from-dev-orgsolution:
+    if: github.actor == 'hitesh3p48cy-github'
+    runs-on: ubuntu-latest
+    # or you can say runs-on: ubuntu-latest
+    
+    env:
+      RUNNER_DEBUG: 1
+
+    environment:
+      QA
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        lfs: true
+        
+    - name: who-am-i action
+      uses: microsoft/powerplatform-actions/who-am-i@v0
+      with:
+        environment-url: ${{env.ENVIRONMENT_URL}}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+
+
+    - name: export-solution action
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+        environment-url: ${{env.ENVIRONMENT_URL}}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-name: ${{ github.event.inputs.solution_name1 }}
+        solution-output-file: ${{ github.event.repository.name}}/${{ github.event.inputs.solution_name1 }}_unmanaged.zip
+        overwrite: true
+        
+    - name: unpack-solution action
+      uses: microsoft/powerplatform-actions/unpack-solution@v0
+      with:
+        solution-file: ${{ github.event.repository.name}}/${{ github.event.inputs.solution_name1 }}_unmanaged.zip
+        solution-folder: ${{ github.event.repository.name}}/${{ github.event.inputs.solution_name1 }}
+        solution-type: 'Unmanaged'
+        overwrite-files: true
+        
+    - name: export-managed-solution
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+            environment-url: ${{env.ENVIRONMENT_URL}}
+            app-id: ${{secrets.CLIENT_ID}}
+            client-secret: ${{ secrets.PowerPlatformSPN }}
+            tenant-id: ${{secrets.TENANT_ID}}
+            solution-name: ${{ github.event.inputs.solution_name1 }}
+            solution-output-file: ${{ github.event.repository.name }}/${{ github.event.inputs.solution_name1 }}_managed.zip
+            overwrite: true
+            managed: true
+    
+    
+    - name: Git Fetch and Commit 
+      run: |
+        git pull origin main
+        git fetch --all  
+        git config --global user.email "no-reply@github.com"
+        git config --global user.name "GitHub Actions"
+        git checkout main
+        git add --all 
+        git commit -m "Updates from the dev environment" --allow-empty
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git push
