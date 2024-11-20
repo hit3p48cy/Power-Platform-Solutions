@@ -25,7 +25,7 @@ permissions:
   contents: write
 jobs:
   export-from-dev-orgsolution:
-    if: github.actor == 'hitesh3p48cy-github'
+    if: github.actor == 'hit3p48cy'
     runs-on: ubuntu-latest
     # or you can say runs-on: ubuntu-latest
     
