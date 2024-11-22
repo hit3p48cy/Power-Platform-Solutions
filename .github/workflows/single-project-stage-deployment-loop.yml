@@ -9,7 +9,7 @@ on:
       
 env:
 #edit your values here
-  ENVIRONMENT_URL: ${{ github.actor == 'hit3p48cy-' && 'https://orga37e0bb9-.crm.dynamics.com/' || github.actor == 'hit3p48cy' && 'https://orga37e0bb9.crm.dynamics.com/' || 'https://orga37e0bb9--.crm.dynamics.com/' }}
+  ENVIRONMENT_URL: 'https://orga37e0bb9.crm.dynamics.com/'
 
 permissions:
   contents: write
