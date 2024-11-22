@@ -35,7 +35,7 @@ jobs:
       Dev
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
       with:
         lfs: true
         
@@ -107,7 +107,7 @@ jobs:
       QA
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
       with:
         lfs: true
         
