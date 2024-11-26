@@ -1,0 +1,86 @@
+name: ExportandBranchSolutionPicker
+# Export solution from SANDBOX or DEV environment
+#  unpack it and prepare, commit and push a git branch with the changes
+#  uses DEV environment credentials
+on:
+  workflow_dispatch:
+    inputs:
+      solution_name:
+        type: choice
+        description: "name of the Solution"
+        required: true
+        options:
+        - OrgSolution
+        - DemoSolution
+        - TempSolution
+        - Default
+      environment_url:
+        type: choice
+        description: "https endpoint of your Dataverse environment"
+        required: true
+        options:
+        - https://3p48cydefault.crm.dynamics.com
+        - https://orga37e0bb9.crm.dynamics.com
+      solution_source_folder:
+        description: "Location of the solution files"
+        required: true
+        default: out/solutions
+      solution_outbound_folder:
+        description: "solution outbound folder"
+        required: true
+        default: out/exported
+
+permissions:
+  contents: write
+
+jobs:
+  export-from-environment:
+    runs-on: windows-latest
+    env:
+      RUNNER_DEBUG: 1
+    environment: dev
+
+    steps:
+    - uses: actions/checkout@v4.2.2
+      with:
+        lfs: true
+
+    - name: who-am-i action
+      uses: microsoft/powerplatform-actions/who-am-i@v0
+      with:
+       environment-url: ${{github.event.inputs.environment_url}}
+       app-id: ${{secrets.CLIENT_ID}}
+       client-secret: ${{ secrets.SP_SECRET_VALUE }}
+       tenant-id: ${{secrets.TENANT_ID}}
+ 
+    - name: Generate current date
+      id: generate_date
+      run: |
+        $currentDate = Get-Date -Format "yyyyMMdd-HHmm"
+        echo "Current date: $currentDate"
+        echo "::set-output name=current_date::$currentDate"
+      shell: pwsh
+
+    - name: export-solution managed action
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+        environment-url: ${{github.event.inputs.environment_url}}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.SP_SECRET_VALUE }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-name: ${{ github.event.inputs.solution_name }}
+        solution-output-file: ${{ github.event.inputs.solution_outbound_folder}}/${{ github.event.inputs.solution_name }}_managed.zip
+        managed: true
+        run-asynchronously: true
+
+    - name: export-solution unmanaged action
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+        environment-url: ${{github.event.inputs.environment_url}}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.SP_SECRET_VALUE }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-name: ${{ github.event.inputs.solution_name }}
+        solution-output-file: ${{ github.event.inputs.solution_outbound_folder }}/${{ github.event.inputs.solution_name }}.zip
+        managed: false
+        run-asynchronously: true
