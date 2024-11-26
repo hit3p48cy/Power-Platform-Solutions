@@ -84,3 +84,20 @@ jobs:
         solution-output-file: ${{ github.event.inputs.solution_outbound_folder }}/${{ github.event.inputs.solution_name }}.zip
         managed: false
         run-asynchronously: true
+
+    - name: unpack-solution action
+      uses: microsoft/powerplatform-actions/unpack-solution@v0
+      with:
+        solution-file: ${{ github.event.inputs.solution_outbound_folder }}/${{ github.event.inputs.solution_name }}.zip
+        solution-folder: ${{ github.event.inputs.solution_source_folder }}/${{ github.event.inputs.solution_name }}
+        solution-type: 'both'
+        overwrite-files: true
+
+    - name: branch-solution, prepare it for a PullRequest
+      uses: microsoft/powerplatform-actions/branch-solution@v0
+      with:
+        branch-name: ${{ github.event.inputs.solution_name }}-${{ steps.generate_date.outputs.current_date }}
+        solution-folder: ${{ github.event.inputs.solution_source_folder }}/${{ github.event.inputs.solution_name }}
+        solution-target-folder: solutions/${{ github.event.inputs.solution_name }}/src
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        allow-empty-commit: true
