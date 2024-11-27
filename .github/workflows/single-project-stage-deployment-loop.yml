@@ -44,7 +44,7 @@ jobs:
 
 
     - name: export-solution action
-      uses: microsoft/powerplatform-actions/export-solution@v0
+      uses: microsoft/powerplatform-actions/export-solution@v1
       with:
         environment-url: ${{env.ENVIRONMENT_URL}}
         app-id: ${{secrets.CLIENT_ID}}
@@ -55,7 +55,7 @@ jobs:
         overwrite: true
         
     - name: unpack-solution action
-      uses: microsoft/powerplatform-actions/unpack-solution@v0
+      uses: microsoft/powerplatform-actions/unpack-solution@v1
       with:
         solution-file: ${{ github.event.repository.name}}/${{ matrix.solution }}_unmanaged.zip
         solution-folder: ${{ github.event.repository.name}}/${{ matrix.solution }}
@@ -63,7 +63,7 @@ jobs:
         overwrite-files: true
         
     - name: export-managed-solution
-      uses: microsoft/powerplatform-actions/export-solution@v0
+      uses: microsoft/powerplatform-actions/export-solution@v1
       with:
             environment-url: ${{env.ENVIRONMENT_URL}}
             app-id: ${{secrets.CLIENT_ID}}
