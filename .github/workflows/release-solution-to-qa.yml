@@ -17,7 +17,7 @@ on:
         description: 'QA environment url.'
         type: string
         required: true
-        default: https://org4f1db018.crm.dynamics.com/
+        default: https://orgaaa2286a.crm.dynamics.com/
       
   
 permissions:
