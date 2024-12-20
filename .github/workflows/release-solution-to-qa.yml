@@ -11,7 +11,7 @@ on:
       solution_name:
         description: 'The solution name.'
         type: string
-        default: DemoSolution_1
+        default: DemoSolution_2
       
       QA_ENVIRONMENT_URL: 
         description: 'QA environment url.'
