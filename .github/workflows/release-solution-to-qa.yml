@@ -1,0 +1,67 @@
+name: release-solution-to-qa
+# Reusable workflow
+# convert solution to managed (using a build PowerPlatform environment for the conversion)
+# upload the solution to the GitHub artifacts and deploy to the PROD environment
+on:
+  workflow_call:
+    inputs: 
+      #Do Not change these values
+      #Values are set by the caller
+      #caller sample: release-action-call.ymnl
+      solution_name:
+        description: 'The solution name.'
+        type: string
+        default: DemoSolution_1
+      root_folder:
+        description: 'name of the folder where the solution is going unpacked'
+        type: string
+        default: ${{ github.event.repository.name }}
+      zip_folder:
+        description: 'name of the folder where the zip files reside'
+        type: string
+        default: ${{ github.event.repository.name }}
+      QA_ENVIRONMENT_URL: 
+        description: 'QA environment url.'
+        type: string
+        required: true
+        default: https://orgaaa2286a.crm.dynamics.com/
+      
+  
+permissions:
+  contents: write
+
+jobs:
+  release-to-qa:
+    #needs: [ convert-to-managed ]
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_DEBUG: 1
+
+    steps:
+    - uses: actions/checkout@v2.3.5
+      with:
+        lfs: true
+
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1
+
+    - name: who-am-i action
+      uses: microsoft/powerplatform-actions/who-am-i@v1
+      with:
+        environment-url: ${{ inputs.QA_ENVIRONMENT_URL }}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+   
+    - name: Import solution to QA env
+      uses: microsoft/powerplatform-actions/import-solution@v1
+      with:
+        environment-url: ${{ inputs.QA_ENVIRONMENT_URL }}
+        app-id: ${{secrets.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{secrets.TENANT_ID}}
+        solution-file: ${{ inputs.zip_folder}}/${{ inputs.solution_name }}_managed.zip
+        force-overwrite: true
+        publish-changes: true
+        run-asynchronously: true
+        deployment-settings-file: ${{ github.event.inputs.solution_source_folder }}/${{ github.event.inputs.solution_name }}/DeploymentSettings/DeploymentSettings.json
