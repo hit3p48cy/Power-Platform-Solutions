@@ -12,14 +12,7 @@ on:
         description: 'The solution name.'
         type: string
         default: DemoSolution_1
-      root_folder:
-        description: 'name of the folder where the solution is going unpacked'
-        type: string
-        default: ${{ github.event.repository.name }}
-      zip_folder:
-        description: 'name of the folder where the zip files reside'
-        type: string
-        default: ${{ github.event.repository.name }}
+      
       QA_ENVIRONMENT_URL: 
         description: 'QA environment url.'
         type: string
@@ -60,7 +53,7 @@ jobs:
         app-id: ${{secrets.CLIENT_ID}}
         client-secret: ${{ secrets.PowerPlatformSPN }}
         tenant-id: ${{secrets.TENANT_ID}}
-        solution-file: ${{ inputs.zip_folder}}/${{ inputs.solution_name }}_managed.zip
+        solution-file: ${{ github.event.repository.name}}/${{ inputs.solution_name }}_managed.zip
         force-overwrite: true
         publish-changes: true
         run-asynchronously: true
