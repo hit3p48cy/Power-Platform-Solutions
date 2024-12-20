@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="dev_env_new">
+  <defaultvalue>emailiddefaultvalue</defaultvalue>
+  <displayname default="env_new">
+    <label description="env_new" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.2</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>
