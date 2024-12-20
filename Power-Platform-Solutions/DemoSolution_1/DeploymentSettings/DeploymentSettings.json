@@ -1,0 +1,36 @@
+{
+  "EnvironmentVariables": [
+    {
+      "SchemaName": "dev_devList",
+      "Value": "",
+      "Name": {
+        "Default": "devList",
+        "ByLcid": {
+          "1033": "devList"
+        }
+      }
+    },
+    {
+      "SchemaName": "dev_devSite",
+      "Value": "",
+      "Name": {
+        "Default": "devSite",
+        "ByLcid": {
+          "1033": "devSite"
+        }
+      }
+    },
+    {
+      "SchemaName": "dev_env_site",
+      "Value": "",
+      "DefaultValue": "https://3p48cy.sharepoint.com/sites/saointranet",
+      "Name": {
+        "Default": "env_site",
+        "ByLcid": {
+          "1033": "env_site"
+        }
+      }
+    }
+  ],
+  "ConnectionReferences": []
+}
