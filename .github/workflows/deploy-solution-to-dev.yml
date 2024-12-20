@@ -12,7 +12,7 @@ on:
       solution_name:
         description: 'The solution name.'
         type: string
-        default: OrgSolution
+        default: DemoSolution_1
       root_folder:
         description: 'name of the folder where the solution is going unpacked'
         type: string
@@ -39,7 +39,7 @@ jobs:
       RUNNER_DEBUG: 1
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         lfs: true
     - name: who-am-i action
