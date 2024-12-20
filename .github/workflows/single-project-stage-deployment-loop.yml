@@ -20,7 +20,7 @@ jobs:
     
     strategy:
       matrix:
-        solution: [OrgSolution]
+        solution: [DemoSolution_1]
     
     # or you can say runs-on: ubuntu-latest
     env:
