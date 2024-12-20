@@ -17,7 +17,7 @@ on:
         description: 'QA environment url.'
         type: string
         required: true
-        default: https://orga37e0bb9.crm.dynamics.com/
+        default: https://org4f1db018.crm.dynamics.com/
       
   
 permissions:
@@ -53,7 +53,7 @@ jobs:
         app-id: ${{secrets.CLIENT_ID}}
         client-secret: ${{ secrets.PowerPlatformSPN }}
         tenant-id: ${{secrets.TENANT_ID}}
-        solution-file: ${{ github.event.repository.name}}/${{ inputs.solution_name }}_managed.zip
+        solution-file: ${{ github.event.repository.name}}/${{ inputs.solution_name }}_unmanaged.zip
         force-overwrite: true
         publish-changes: true
         run-asynchronously: true
