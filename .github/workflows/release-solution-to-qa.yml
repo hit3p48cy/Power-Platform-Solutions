@@ -56,5 +56,4 @@ jobs:
         solution-file: ${{ github.event.repository.name}}/${{ inputs.solution_name }}_unmanaged.zip
         force-overwrite: true
         publish-changes: true
-        run-asynchronously: true
         deployment-settings-file: ${{ github.event.inputs.solution_source_folder }}/${{ github.event.inputs.solution_name }}/DeploymentSettings/DeploymentSettings.json
