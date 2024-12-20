@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="dev_env_site">
+  <defaultvalue>https://3p48cy.sharepoint.com/sites/saointranet</defaultvalue>
+  <displayname default="env_site">
+    <label description="env_site" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>
