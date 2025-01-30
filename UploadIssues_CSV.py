@@ -2,7 +2,7 @@ import csv
 import requests
 
 # Replace with your GitHub info
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "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"
 REPO_OWNER = "hit3p48cy"
 REPO_NAME = "Power-Platform-Solutions"
 
