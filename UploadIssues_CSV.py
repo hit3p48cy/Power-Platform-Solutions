@@ -17,7 +17,8 @@ def create_issue(title, body, labels):
 with open("issues.csv", newline="", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        result = create_issue(row["title"], row["body"], row["labels"])
+        #result = create_issue(row["title"], row["body"], row["labels"])
+        result = create_issue(row["title"])
         print(f"Issue created: {result.get('html_url', 'Error')}")
 
 print("All issues imported!")
