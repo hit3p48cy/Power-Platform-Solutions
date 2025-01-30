@@ -7,7 +7,7 @@ REPO_OWNER = "hit3p48cy"
 REPO_NAME = "Power-Platform-Solutions"
 
 def create_issue(title, body, labels):
-    url = f"https://api.github.com/repos/hit3p48cy/{Power-Platform-Solutions}/issues"
+    url = f"https://api.github.com/repos/hit3p48cy/Power-Platform-Solutions/issues"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
     data = {"title": title, "body": body, "labels": labels.split(",")}
     response = requests.post(url, json=data, headers=headers)
@@ -17,8 +17,8 @@ def create_issue(title, body, labels):
 with open("issues.csv", newline="", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        #result = create_issue(row["title"], row["body"], row["labels"])
-        result = create_issue(row["title"])
+        result = create_issue(row["title"], row["body"], row["labels"])
+        
         print(f"Issue created: {result.get('html_url', 'Error')}")
 
 print("All issues imported!")
