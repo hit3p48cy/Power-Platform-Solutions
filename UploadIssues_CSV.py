@@ -7,7 +7,7 @@ REPO_OWNER = "hit3p48cy"
 REPO_NAME = "Power-Platform-Solutions"
 
 def create_issue(title, body, labels):
-    url = f"https://api.github.com/repos/hit3p48cy/Power-Platform-Solutions/issues"
+    url = f"https://api.github.com/repos/hit3p48cy/projects/2"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
     data = {"title": title, "body": body, "labels": labels.split(",")}
     response = requests.post(url, json=data, headers=headers)
