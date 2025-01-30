@@ -2,12 +2,12 @@ import csv
 import requests
 
 # Replace with your GitHub info
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = "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"
 REPO_OWNER = "hit3p48cy"
 REPO_NAME = "Power-Platform-Solutions"
 
 def create_issue(title, body, labels):
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/issues"
+    url = f"https://api.github.com/repos/hit3p48cy/Power-Platform-Solutions/issues"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
     data = {"title": title, "body": body, "labels": labels.split(",")}
     response = requests.post(url, json=data, headers=headers)
