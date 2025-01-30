@@ -14,7 +14,7 @@ def create_issue(title, body, labels):
     return response.json()
 
 # Read issues from CSV and create them in GitHub
-with open("issues.csv", newline="", encoding="utf-8") as csvfile:
+with open("issue_final.csv", newline="", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         result = create_issue(row["title"], row["body"], row["labels"])
